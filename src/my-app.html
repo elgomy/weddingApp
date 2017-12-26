@@ -1,0 +1,495 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="my-icons.html">
+
+<link rel="lazy-import" href="my-view1.html">
+<link rel="lazy-import" href="my-view2.html">
+<link rel="lazy-import" href="my-view3.html">
+<link rel="lazy-import" href="my-view404.html">
+
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../bower_components/iron-dropdown/iron-dropdown.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-image/iron-image.html">
+
+<link rel="import" href="../bower_components/lite-signal-master/lite-signal.html">
+
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../elements/elements-import.html">
+
+>
+
+<dom-module id="my-app">
+  <template>
+    <style include="shared-styles">
+      :host {
+        --app-primary-color: white;
+        --app-secondary-color: black;
+        --accent-color:#51CAEE;
+        display: block;
+      }
+
+      app-drawer-layout:not([narrow]) [drawer-toggle] {
+        display: none;
+      }
+
+      app-header {       
+        background-color:var(--app-primary-color);
+        box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
+      }
+
+      app-header paper-icon-button {
+        --paper-icon-button-ink-color: white;
+      }
+
+      .drawer-list {
+        margin: 0 20px;
+
+      }
+
+      .drawer-list a {
+        display: block;
+        padding: 0 16px;
+        text-decoration: none;
+        color: var(--app-secondary-color);
+        line-height: 40px;
+      }
+
+      .drawer-list a:hover {
+        display: block;
+        padding: 0 16px;
+        text-decoration: none;
+        color: var(--app-secondary-color);
+        line-height: 40px;
+        color:#3F88E0;
+      }
+
+      .drawer-list a.iron-selected {
+        color: black;
+        font-weight: bold;
+        background: #3F88E0;
+      }
+
+    app-drawer {
+        --app-drawer-content-container: {
+            background: #DA22FF;  /* fallback for old browsers */
+            background-image: background: -webkit-linear-gradient(#9733EE, #DA22FF);
+            background-image: background: -o-linear-gradient(#9733EE, #DA22FF);
+            background-image: background: linear-gradient(#9733EE, #DA22FF);
+            background: -o-linear-gradient(#9733EE, #DA22FF);
+            background: linear-gradient(#9733EE, #DA22FF);  /* Chrome 10-25, Safari 5.1-6 */ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            opacity: 0.7;
+            background-color: #fff;
+          /*  background-image: url(../images/background.jpg); */
+          };
+      }
+
+      .card{
+        width: 345px;
+        height:130px;
+        padding: 1px;
+        box-shadow: 0 2px 10px rgba(0,0,0,.2);
+      }
+
+      .actions{
+         @apply(--layout-horizontal);         
+         @apply(--layout-around-justified);
+         background: #eceff1;
+         border-top: 1px solid #b0bec5;       
+         margin-top: 15px;
+         border-radius:0px 0px 5px 5px;
+      }
+
+      .actions paper-button{
+        text-transform: none;
+        border:1px solid #b0bec5;
+        margin:5px;
+        padding: 5px;
+      }
+
+      .userName{
+        margin-left: 15px;
+        text-align: center;
+        font-weight: bold;
+        
+      }
+
+       .userEmail{     
+        text-align: center;
+        
+      }   
+
+      .cardContent{
+      font-size: 0.7em;
+        padding:5px;
+       
+      }
+
+      iron-image{
+        background-color:var(--app-primary-color);
+         border-radius: 50px;
+
+         --iron-image-width:35px;
+         --iron-image-height:35px;
+         margin-top: 10px
+      }
+
+      iron-icon#account{
+        
+        margin-top: 10px;
+        --iron-icon-width:35px;     
+        --iron-icon-height:35px;    
+
+      }
+
+      [hidden]{
+          display: none
+        }
+
+      paper-dialog{
+        height: 400px;
+        width: 300px;
+        border-radius:7px;
+      }
+
+      .header{
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+        height: 130px;
+        margin-top: 0px;
+        background: var(--app-primary-color);
+      }
+
+      .login{
+        
+        margin-top: 0px;
+      }
+
+      app-toolbar img{
+        width: 100px
+      }
+
+      .profilePhoto{
+         border-radius: 50px;
+         margin-right: 5px;
+         width: 65px;
+         height: 65px;
+         float:left;
+      }
+ 
+    </style>
+
+    
+
+    <app-location route="{{route}}"></app-location>
+    <app-route
+        route="{{route}}"
+        pattern="[[rootPattern]]:page"
+        data="{{routeData}}"
+        tail="{{subroute}}"></app-route>
+
+    <app-drawer-layout fullbleed>
+      <!-- Drawer content -->
+      <app-drawer id="drawer" slot="drawer">
+        <app-toolbar style="height: 50px;"><img id="logo" src="../images/vigio.png"></app-toolbar>
+        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+          <a name="view1" href="view1">View One</a>
+          <a name="view2" href="view2">View Two</a>
+          <a name="view3" href="view3">Account</a>
+        </iron-selector>
+      </app-drawer>
+
+      <!-- Main content -->
+      <app-header-layout has-scrolling-region>
+
+        <app-header style="height: 50px;" slot="header" condenses reveals effects="waterfall">
+          <app-toolbar>
+            <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
+            <div main-title>Mask 2.1</div>
+
+
+          
+              <!-- LOGIN -->
+               <iron-image loaded="{{loaded}}" preload fade hidden$="{{!signed}}" on-tap="dropAccount" src="[[userProfile.photoURL]]"></iron-image>
+         
+              <iron-icon hidden$="{{signed}}" on-tap="dialogAccount" icon="my-icons:account-circle" id="account"></iron-icon>    
+
+              <!-- LOGIN DROPDOWN -->  
+             
+              <iron-dropdown id="profileDrop" horizontal-align="right" vertical-align="top" vertical-offset="45" horizontal-offset="2">
+                <div slot="dropdown-content">
+     
+                  <div class="card" id="accountCard">
+                    <div class="cardContent">
+                      <img class="profilePhoto" hidden$="{{!signed}}" src$="[[userProfile.photoURL]]">
+                      <div class="userName">[[userProfile.nombre]]</div>
+                      <div class="userEmail">[[user.email]]</div>
+                      <a href="#">privacidade</a>
+                    </div>
+                    <div class="actions" id="actions">
+                      <a href="view3"><paper-button>conta</paper-button></a>
+                      <paper-button on-tap="logout">Sair</paper-button>
+                    </div>
+                  </div>   
+                </div>
+              </iron-dropdown>
+        </app-header>
+
+        <iron-pages
+            selected="[[page]]"
+            attr-for-selected="name"
+            fallback-selection="view404"
+            role="main">
+          <my-view1 name="view1"></my-view1>
+          <my-view2 name="view2"></my-view2>
+          <my-view3 name="view3"></my-view3>
+          <my-view404 name="view404"></my-view404>
+        </iron-pages>
+      </app-header-layout>
+    </app-drawer-layout>
+
+    <!-- DIALOG LOGIN -->
+     <paper-dialog modal id="dialogLogin">
+             
+            <h2 class="header">Mask 2.1  
+            <iron-icon icon="my-icons:close" on-tap="dialogClose"></iron-icon> 
+            </h2>
+           
+            <div class="login">
+              <login-admin></login-admin>
+            </div>
+    
+     </paper-dialog>
+
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////-->
+
+ <!--Initialize Firebase -->
+         <firebase-app 
+            auth-domain="mask-f94d9.firebaseapp.com"
+            database-url="https://mask-f94d9.firebaseio.com"
+            api-key="AIzaSyDmqqvnNoBvR_z8ZpTaA82vlomGAsBXDuU"
+            name="mask-polymerfire"
+            app="{{fbapp}}">
+        </firebase-app>
+
+         <firebase-auth 
+            app-name="mask-polymerfire"
+            id="auth" 
+            user="{{user}}" 
+            signed-in="{{signed}}"
+            status-known="{{statusKnown}}"
+            app="{{fbapp}}">
+        </firebase-auth>
+
+        <firebase-document               
+            app-name="mask-polymerfire"
+            path="/users/{{user.uid}}" 
+            data="{{userProfile}}">
+       </firebase-document>
+
+       <!-- Dialog to confirm user account delete -->
+      <paper-dialog modal id="deleteUserDialog" on-iron-overlay-closed="dialogAccept">
+            <h2><iron-icon icon="my-icons:warning" id="warningIcon"></iron-icon> Are you sure?</h2>
+            <p>delete user <b>[[userProfile.nombre]]</b></p>
+              <div class="buttons">
+                <paper-button dialog-dismiss autofocus>Dismiss</paper-button>
+                <paper-button dialog-confirm >Confirm</paper-button>
+              </div>
+      </paper-dialog>
+
+    <!--toast -->
+    <paper-toast id="positiveToast"></paper-toast>
+    <paper-toast id="negativeToast"></paper-toast>
+
+  </template>
+
+  <script>
+    class MyApp extends Polymer.Element {
+
+      static get is() { return 'my-app'; }
+
+      static get properties() {
+        return {
+          page: {
+            type: String,
+            reflectToAttribute: true,
+            observer: '_pageChanged',
+          },
+          rootPattern: String,
+          routeData: Object,
+          subroute: String,
+          // Added properties
+          userProfile:Object,
+          fbapp:Object,
+          signed:Boolean,
+          provider:String,
+          user:Object,
+          pass:String,
+        
+        };
+      }
+
+      static get observers() {
+        return [
+          '_routePageChanged(routeData.page)',
+        ];
+      }
+
+      constructor() {
+        super();
+
+        // Get root pattern for app-route, for more info about `rootPath` see:
+        // https://www.polymer-project.org/2.0/docs/upgrade#urls-in-templates
+        this.rootPattern = (new URL(this.rootPath)).pathname;
+      }
+
+      _routePageChanged(page) {
+        // Polymer 2.0 will call with `undefined` on initialization.
+        // Ignore until we are properly called with a string.
+        if (page === undefined) {
+          return;
+        }
+
+        // If no page was found in the route data, page will be an empty string.
+        // Deault to 'view1' in that case.
+        this.page = page || 'view1';
+
+        // Close a non-persistent drawer when the page & route are changed.
+        if (!this.$.drawer.persistent) {
+          this.$.drawer.close();
+        }
+      }
+
+      _pageChanged(page) {
+        // Load page import on demand. Show 404 page if fails
+        var resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
+        Polymer.importHref(
+            resolvedPageUrl,
+            null,
+            this._showPage404.bind(this),
+            true);
+      }
+
+      _showPage404() {
+        this.page = 'view404';
+      }
+
+      /////// Added Methods ///////////
+
+       ready(){
+        super.ready();
+        this.addEventListener('positiveToast', e => this._openPositiveToast(e));
+        this.addEventListener('negativeToast', e => this._openNegativeToast(e));
+        this.addEventListener('closeLogin', e => this._closeDrope(e));
+        this.addEventListener('closeLogin', e => this.dialogClose(e));
+        this.addEventListener('delete-user', e => this._removeUser(e)); // <delete-account>  
+        }
+
+        _openPositiveToast(e){
+            this.$.positiveToast.open();
+            this.$.positiveToast.text = e.detail
+        }
+
+        _openNegativeToast(e){
+            this.$.negativeToast.open();
+            this.$.negativeToast.text = e.detail
+        }
+
+        /**
+      * removeUser() and dialogAccept() work together
+      * flow to delete user account
+      * receive the password launched by <delete-account> component (e.detail) and store it in the 'pass' property
+      */
+      _removeUser(e){
+        this.$.deleteUserDialog.open();
+        this.pass = e.detail;    
+      }
+        /**
+      * removeUser() and dialogAccept() work together
+      * flow to delete user account
+      * if 'confirm' button is pressed in the dialog lauched by removeUser(), a signal is dispatched with the user password, which is received by <account-admin> component
+      */
+       dialogAccept(e){
+        if (e.detail.confirmed){    
+          this.dispatchEvent(
+            new CustomEvent("lite-signal", {
+              bubbles: true,
+              compose: true, // to cross Shadow DOM boundaries
+              detail: {
+                name: "password",
+                data: { password: this.pass }
+              }
+            })
+          )
+
+        }       
+      }
+
+    
+      logout(){
+        if (!this.user){
+                alert('no estas logueado')
+                    return false;
+                  }
+
+        this.$.auth.signOut().catch(function(error){
+          console.log(error.code, error.message)
+        }).then(function(){
+            this._closeDrope();
+            this.dispatchEvent(new CustomEvent('positiveToast',{bubbles:true, composed:true, detail:'C u soon!'}))
+         // this.fire('positive-toast','Sessão encerrada')
+        }.bind(this))
+      }
+
+      dropAccount(){
+       
+        this.$.profileDrop.open()
+      }
+
+      _closeDrope(){
+        this.$.profileDrop.close()
+      }
+
+        dialogAccount(){
+       
+        this.$.dialogLogin.toggle()
+      }
+
+       dialogClose(){
+       
+        this.$.dialogLogin.close()
+      }
+
+     
+      
+    }
+
+    window.customElements.define(MyApp.is, MyApp);
+  </script>
+</dom-module>
