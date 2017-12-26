@@ -31,11 +31,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-dropdown/iron-dropdown.html">
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tab.html">
 
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 
 <link rel="import" href="../bower_components/lite-signal-master/lite-signal.html">
 
@@ -52,17 +55,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --app-secondary-color: black;
         --accent-color:#51CAEE;
         display: block;
+         --app-drawer-width:38%;
       }
 
       app-drawer-layout:not([narrow]) [drawer-toggle] {
         display: none;
       }
 
-      app-header {       
-        background-color:var(--app-primary-color);
-        box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
-      }
-
+    
       app-header paper-icon-button {
         --paper-icon-button-ink-color: white;
       }
@@ -96,6 +96,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
     app-drawer {
+       
         --app-drawer-content-container: {
             background: #DA22FF;  /* fallback for old browsers */
             background-image: background: -webkit-linear-gradient(#9733EE, #DA22FF);
@@ -104,7 +105,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             background: -o-linear-gradient(#9733EE, #DA22FF);
             background: linear-gradient(#9733EE, #DA22FF);  /* Chrome 10-25, Safari 5.1-6 */ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
             opacity: 0.7;
-            background-color: #fff;
+            background-color: white
           /*  background-image: url(../images/background.jpg); */
           };
       }
@@ -152,7 +153,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       iron-image{
         background-color:var(--app-primary-color);
-         border-radius: 50px;
+         border-radius: 50%;
 
          --iron-image-width:35px;
          --iron-image-height:35px;
@@ -177,13 +178,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         border-radius:7px;
       }
 
-      .header{
-        border-top-left-radius: 7px;
-        border-top-right-radius: 7px;
-        height: 130px;
-        margin-top: 0px;
-        background: var(--app-primary-color);
-      }
+    
 
       .login{
         
@@ -195,16 +190,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .profilePhoto{
-         border-radius: 50px;
+         border-radius: 50%;
          margin-right: 5px;
          width: 65px;
          height: 65px;
          float:left;
       }
+
+      app-header-layout{
+        background-image: url("../images/foto2.jpg")
+      }
+  
+    paper-tabs{
+        color:#ffffff;
+        margin-top: 20px;
+        --paper-tab-ink:#ffffff;
+        --paper-tabs-selection-bar-color:none;
+      }
  
     </style>
 
-    
+    <iron-media-query query="(min-width: 600px)" query-matches="{{bigScreen}}"></iron-media-query>
 
     <app-location route="{{route}}"></app-location>
     <app-route
@@ -213,32 +219,51 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
+    <!-- set 'fullbleed' to ocuppy total body space. Important -->
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
       <app-drawer id="drawer" slot="drawer">
-        <app-toolbar style="height: 50px;"><img id="logo" src="../images/vigio.png"></app-toolbar>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+
+        <app-toolbar style="height: 50px;">
+          <div spacer></div> <!--Adds a left margin of 64px -->
+          <div main-title hidden$="{{!bigScreen}}">Brazilian Dream</div>
+        </app-toolbar>
+
+
+        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation" hidden$="{{bigScreen}}">
           <a name="view1" href="view1">View One</a>
           <a name="view2" href="view2">View Two</a>
-          <a name="view3" href="view3">Account</a>
+          <a name="view3" href="view3">Conta</a>
         </iron-selector>
+
       </app-drawer>
 
       <!-- Main content -->
       <app-header-layout has-scrolling-region>
 
-        <app-header style="height: 50px;" slot="header" condenses reveals effects="waterfall">
-          <app-toolbar>
-            <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title>Mask 2.1</div>
-
+        <app-header slot="header" condenses reveals effects="waterfall">
+          <app-toolbar hidden$="{{bigScreen}}">
+            <paper-icon-button icon="my-icons:menu" drawer-toggle hidden$="{{bigScreen}}"></paper-icon-button>
+            <div spacer></div> <!--Adds a left margin of 64px -->
+            <div main-title hidden$="{{bigScreen}}">Brazilian Dream</div>
+     
+              <!-- LOGIN -->
+             
+                <iron-image loaded="{{loaded}}" preload fade hidden$="{{!signed}}" on-tap="dropAccount" src="[[userProfile.photoURL]]"></iron-image>
+         
+                <iron-icon hidden$="{{signed}}" on-tap="dialogAccount" icon="my-icons:account-circle" id="account"></iron-icon>  
+           
 
           
-              <!-- LOGIN -->
-               <iron-image loaded="{{loaded}}" preload fade hidden$="{{!signed}}" on-tap="dropAccount" src="[[userProfile.photoURL]]"></iron-image>
-         
-              <iron-icon hidden$="{{signed}}" on-tap="dialogAccount" icon="my-icons:account-circle" id="account"></iron-icon>    
+          </app-toolbar>
 
+                 <!-- IMP: if {{page}} binding was unidirectional [[]] it wouldn't work -->
+          <paper-tabs selected="{{page}}" attr-for-selected="name" hidden$="{{!bigScreen}}">
+            <paper-tab name="view1">First tab</paper-tab>
+            <paper-tab name="view2">Tab two</paper-tab>
+            <paper-tab name="view3">Conta</paper-tab>
+          </paper-tabs>
+        
               <!-- LOGIN DROPDOWN -->  
              
               <iron-dropdown id="profileDrop" horizontal-align="right" vertical-align="top" vertical-offset="45" horizontal-offset="2">
@@ -351,6 +376,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           provider:String,
           user:Object,
           pass:String,
+            /**
+          * media query binded to elements that returns true when min-width: 600px
+          * @type {Boolean}
+          */ 
+          bigScreen:Boolean,
         
         };
       }
