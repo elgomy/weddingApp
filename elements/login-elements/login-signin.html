@@ -15,9 +15,6 @@
        
        /* background-color: var(--paper-indigo-a200); */
        
-       @apply(--layout-flex);
-
-    
       }
 
     /*  :host([signed-in]) { /*condicional de estilo que nos permite que cuando el usuario se loguee el componente se haga invisible
@@ -25,12 +22,14 @@
         pointer-events: none; 
       } */
 
-       paper-button#signButton{
-        background: var(--accent-color);
+       paper-button{
+      @apply --accent-color;
+
         color:white;
         text-transform: capitalize;
-        width: 245px;
-        padding: 7px
+        width: 160px;
+        padding: 7px;
+        margin-top: 25px;
         
       }
    
@@ -50,16 +49,7 @@
               font-size: 0.85em;};     
       }
 
-      gold-email-input{
-        --paper-input-container-focus-color:var(--accent-color)
-      }
-
-    @media (max-width: 600px) { /* estilo aplicado cuando el tamaño es < 400px */
-        .inputs{
-          max-width: 325px;  
-          margin-left: 1px
-        }
-    </style>
+       </style>
           
       <!-- SIGN FORM -->
 
@@ -76,7 +66,7 @@
 
       <paper-input 
         id="passInput"
-        label="Senha"
+        label="Password"
         type="password" 
         required 
         minlength="6"
@@ -85,7 +75,7 @@
         value="{{user.password}}">
       </paper-input>
    
-    <paper-button id="signButton" raised on-tap="signEmail">Enter</paper-button>
+    <paper-button id="signButton" raised on-tap="signEmail">Vaaamooosss</paper-button>
 
     </div>
  

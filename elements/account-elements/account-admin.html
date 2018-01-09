@@ -82,14 +82,14 @@ element to admin user profile
     </style>
 
     <firebase-auth 
-      app-name="mask-polymerfire"
+      app-name="wedding-app"
       id="auth" 
       user="{{user}}" 
       app="{{fbapp}}">
     </firebase-auth> 
 
     <firebase-document               
-      app-name="mask-polymerfire"
+      app-name="wedding-app"
       path="/users/{{user.uid}}" 
       data="{{userProfile}}">
     </firebase-document>

@@ -24,7 +24,7 @@
   <template>
     <style>
       :host {
-      
+        
       } 
 
       img{
@@ -44,16 +44,18 @@
           color:red;
         }
         --paper-tabs:{
-          height: 40px;
+          
           margin-top: 1px
         }
       }
+
+ 
 
     </style>
 
     <!-- Polymerfire component to authenticate users -->
     <firebase-auth 
-            app-name="mask-polymerfire"
+            app-name="wedding-app"
             id="auth" 
             user="{{firebaseUser}}" 
             signed-in="{{signed}}"
@@ -61,7 +63,7 @@
    </firebase-auth>
 
      <!-- USER LOGIN / SIGN UP -->
-    <div>
+    
       <paper-tabs align-bottom selected="{{signSect}}" attr-for-selected="name">
         <paper-tab name="signin">Log In</paper-tab>
         <paper-tab name="register">Sign Up</paper-tab>
@@ -75,11 +77,11 @@
               on-email-signin="emailSignIn"
               signed-in="[[signed]]">
           </login-signin>          
-          
+        <!--  
           <login-social 
               fbapp="{{fbapp}}"
               on-sign-social="signSocial">
-          </login-social>   
+          </login-social>  -->
         </div>
 
         <div name="register">
@@ -92,7 +94,7 @@
           </login-register>
         </div>
 
-       </div> 
+      
    
     </iron-pages>
           
